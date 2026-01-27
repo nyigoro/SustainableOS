@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 #!/bin/bash
 # hal.sh — SustainableOS v0.2
-=======
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
 
-<<<<<<< HEAD
 CPU_DIR="/sys/devices/system/cpu"
 BACKLIGHT="/sys/class/leds/lcd-backlight/brightness"
 SIM_LOG="/tmp/s_os_logs/hal_sim.log"
@@ -49,7 +45,11 @@ case "$1" in
     eco_cpu_limit) eco_cpu_limit "$2" ;;
     eco_backlight) eco_backlight "$2" ;;
     *) echo "hal.sh {eco_mode_on|eco_mode_off|eco_cpu_limit|eco_backlight}" ;;
+<<<<<<< HEAD
 esac
 
 =======
 >>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
+=======
+esac
+>>>>>>> 0de3f92d58c4c7e752fc2dff351b5e854d2665dc

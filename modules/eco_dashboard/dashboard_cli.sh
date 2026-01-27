@@ -1,50 +1,21 @@
 #!/bin/bash
-<<<<<<< HEAD
 # dashboard_cli.sh — SustainableOS v0.2
-=======
-# dashboard_cli.sh - Eco-Dashboard TUI (v0.2)
-set -e
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
 
 BASE_DIR="$(dirname "$0")/../sustainability"
 LOG_FILE="/tmp/s_os_logs/memory.log"
 REAP_LOG="/tmp/s_os_logs/reap_count.log"
 
-<<<<<<< HEAD
-=======
-# --- Wait for Engine Pulse ---
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
 clear
-<<<<<<< HEAD
 echo "📡 Waiting for Sustainability Engine..."
 until [ -s "$LOG_FILE" ] && grep -q MEM_AVAILABLE "$LOG_FILE"; do
     sleep 1
 done
-
-=======
-echo "📡 Waiting for Sustainability Engine to broadcast data..."
-until [ -s "$LOG_FILE" ] && [ $(grep -c "MEM_AVAILABLE" "$LOG_FILE") -gt 0 ]; do
-    sleep 1
-done
-
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
 while true; do
-<<<<<<< HEAD
     MEM_TOTAL=$(grep MEM_TOTAL "$LOG_FILE" | awk '{print $2}')
     MEM_AVAILABLE=$(grep MEM_AVAILABLE "$LOG_FILE" | tail -n1 | awk '{print $2}')
 
     [ -z "$MEM_TOTAL" ] || [ -z "$MEM_AVAILABLE" ] && sleep 1 && continue
 
-=======
-    # RAM stats with fallback to prevent Division by Zero
-    MEM_TOTAL=$(grep MemTotal /proc/meminfo | awk '{print $2}')
-    MEM_AVAILABLE=$(tail -n 20 "$LOG_FILE" | grep MEM_AVAILABLE | tail -n 1 | awk '{print $2}')
-    
-    if [ -z "$MEM_AVAILABLE" ] || [ "$MEM_TOTAL" -eq 0 ]; then
-        sleep 1 && continue
-    fi
-
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
     MEM_PERCENT=$(( MEM_AVAILABLE * 100 / MEM_TOTAL ))
 
 <<<<<<< HEAD
