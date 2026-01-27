@@ -60,3 +60,4 @@ echo "Press Ctrl+C to stop all services."
 trap "echo '🌱 Stopping all services...'; kill $MONITOR_PID $FREEZER_PID $DASH_PID; exit" SIGINT SIGTERM
 
 wait
+
