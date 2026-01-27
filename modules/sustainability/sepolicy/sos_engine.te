@@ -1,0 +1,37 @@
+# SustainableOS SELinux Policy v0.2
+# Domain: sos_engine
+
+type sos_engine, domain;
+type sos_engine_exec, exec_type, file_type, system_file_type;
+
+# Init transition
+init_daemon_domain(sos_engine)
+
+# Process control (safe)
+allow sos_engine self:process fork;
+
+# Procfs access
+allow sos_engine proc_meminfo:file read;
+
+# Sysfs access for CPU, backlight, and zRAM
+allow sos_engine sysfs_devices_system_cpu:file { read write };
+allow sos_engine sysfs_leds:file { read write };
+
+# zRAM is under /sys/block/zram0
+allow sos_engine sysfs_block:file { read write };
+allow sos_engine sysfs_block:dir search;
+
+# VM tuning
+allow sos_engine proc_sys_vm:file write;
+
+# Vendor data logging
+allow sos_engine vendor_data_file:dir { read write add_name remove_name };
+allow sos_engine vendor_data_file:file { read write create unlink };
+
+# Signal handling (apps only)
+allow sos_engine untrusted_app:process { signal sigkill };
+allow sos_engine platform_app:process { signal sigkill };
+
+# Optional /tmp access
+allow sos_engine shell_data_file:dir { read write add_name remove_name };
+allow sos_engine shell_data_file:file { read write create unlink };

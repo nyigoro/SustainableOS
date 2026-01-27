@@ -1,0 +1,67 @@
+// =====================================================
+// SustainableOS v0.2 — Modern Soong Integration
+// =====================================================
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+// -------------------- Shell Binaries --------------------
+
+sh_binary {
+    name: "sos_memory_monitor",
+    src: "memory_monitor.sh",
+    filename: "memory_monitor.sh",
+    sub_dir: "s_os",
+}
+
+sh_binary {
+    name: "sos_reaper",
+    src: "reaper.sh",
+    filename: "reaper.sh",
+    sub_dir: "s_os",
+}
+
+sh_binary {
+    name: "sos_freezer",
+    src: "freezer.sh",
+    filename: "freezer.sh",
+    sub_dir: "s_os",
+}
+
+sh_binary {
+    name: "sos_hal",
+    src: "hal.sh",
+    filename: "hal.sh",
+    sub_dir: "s_os",
+}
+
+sh_binary {
+    name: "sos_zram_init",
+    src: "zram_init.sh",
+    filename: "zram_init.sh",
+    sub_dir: "s_os",
+}
+
+sh_binary {
+    name: "sos_dashboard",
+    src: "dashboard_cli.sh",
+    filename: "dashboard_cli.sh",
+    sub_dir: "s_os",
+}
+
+// -------------------- Config Files --------------------
+
+prebuilt_etc {
+    name: "sos_whitelist",
+    src: "whitelist.txt",
+    sub_dir: "sustainableos",
+    filename: "whitelist.txt",
+}
+
+prebuilt_etc {
+    name: "init_sustainableos",
+    src: "init.sustainableos.rc",
+    sub_dir: "init",
+    filename: "init.sustainableos.rc",
+}

@@ -1,0 +1,73 @@
+# ===============================
+# SustainableOS v0.2 Whitelist
+# ===============================
+
+# -------------------------------
+# System Core
+# -------------------------------
+com.android.systemui
+com.android.phone
+com.android.settings
+com.android.launcher
+android
+
+# -------------------------------
+# Communication Apps (always-on)
+# -------------------------------
+com.whatsapp
+org.telegram.messenger
+com.facebook.orca
+com.facebook.mlite
+com.google.android.gm
+com.google.android.apps.messaging
+com.google.android.talk
+com.skype.raider
+
+# -------------------------------
+# Essential Services
+# -------------------------------
+com.google.android.gms         # Google Play Services
+com.google.android.gms.policy_sidecar_aps
+com.google.android.googlequicksearchbox
+com.google.android.syncadapters.contacts
+com.google.android.backuptransport
+com.google.android.partnersetup
+com.google.android.ondevicepersonalization
+
+# -------------------------------
+# Media / Navigation
+# -------------------------------
+com.google.android.youtube
+com.spotify.music
+com.mxtech.videoplayer.ad
+com.google.android.apps.maps
+com.waze
+
+# -------------------------------
+# Productivity / Utilities
+# -------------------------------
+com.termux
+com.google.android.apps.docs
+com.microsoft.office.officehubrow
+com.dropbox.android
+com.adobe.reader
+
+# -------------------------------
+# Custom S-OS Services
+# -------------------------------
+sos_monitor
+sos_freezer
+sos_dashboard
+hal
+memory_monitor
+run_all
+reaper
+freezer
+zram_init
+
+# -------------------------------
+# Optional: Keep critical foreground apps
+# -------------------------------
+com.instagram.android
+com.snapchat.android
+com.twitter.android

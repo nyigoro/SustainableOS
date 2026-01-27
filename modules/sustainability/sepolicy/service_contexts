@@ -1,0 +1,3 @@
+sos_monitor    u:object_r:sos_engine_exec:s0
+sos_freezer    u:object_r:sos_engine_exec:s0
+sos_dashboard  u:object_r:sos_engine_exec:s0

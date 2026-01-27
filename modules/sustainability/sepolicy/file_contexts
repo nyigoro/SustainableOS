@@ -1,0 +1,6 @@
+/system/bin/s_os/memory_monitor\.sh    u:object_r:sos_engine_exec:s0
+/system/bin/s_os/reaper\.sh            u:object_r:sos_engine_exec:s0
+/system/bin/s_os/freezer\.sh           u:object_r:sos_engine_exec:s0
+/system/bin/s_os/hal\.sh               u:object_r:sos_engine_exec:s0
+/system/bin/s_os/dashboard_cli\.sh     u:object_r:sos_engine_exec:s0
+/system/bin/s_os/run_all\.sh           u:object_r:sos_engine_exec:s0

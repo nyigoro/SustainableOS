@@ -1,0 +1,41 @@
+# --- SustainableOS System Service Definitions ---
+# v0.2 — Pulse + Heartbeat architecture
+
+on post-fs-data
+    mkdir /data/vendor/s_os 0770 system system
+    mkdir /data/vendor/s_os/logs 0770 system system
+    mkdir /tmp/s_os_logs 0775 shell shell
+
+# ----------------------------
+# Pulse (Memory Monitor)
+# ----------------------------
+service sos_monitor /system/bin/s_os/memory_monitor.sh
+    class late_start
+    group system
+    restart_period 5
+    disabled
+
+# ----------------------------
+# Guardian (Freezer)
+# ----------------------------
+service sos_freezer /system/bin/s_os/freezer.sh
+    class late_start
+    group system
+    disabled
+
+# ----------------------------
+# Interface (Dashboard)
+# ----------------------------
+service sos_dashboard /system/bin/s_os/dashboard_cli.sh
+    class late_start
+    user shell
+    group shell
+    disabled
+
+# ----------------------------
+# Boot Trigger
+# ----------------------------
+on property:sys.boot_completed=1
+    start sos_monitor
+    start sos_freezer
+    write /dev/kmsg "🌿 SustainableOS: Engine online."
