@@ -1,61 +1,47 @@
 #!/bin/bash
-# Eco-Dashboard v0.1 - CLI TUI for SustainableOS
-# Displays RAM, frozen/active processes, reaper stats
+# dashboard_cli.sh - Eco-Dashboard TUI
 
-set -e
+BASE_DIR="$(dirname "$0")/../sustainability"
+LOG_FILE="/tmp/s_os_logs/memory.log"
+REAP_COUNT_FILE="/tmp/s_os_logs/reap_count.log"
+FROZEN_LOG="/tmp/s_os_logs/frozen_procs.log"
 
-LOG_FILE="/tmp/s_os_pressure.log"
-REAP_LOG="/tmp/s_os_reap_count.log"
-[ ! -f "$REAP_LOG" ] && echo 0 > "$REAP_LOG"
+refresh_interval=1
 
-# ANSI colors
-GREEN="\e[32m"
-YELLOW="\e[33m"
-RED="\e[31m"
-RESET="\e[0m"
-
-draw_bar() {
-    local percent=$1
-    local width=40
-    local filled=$((percent * width / 100))
-    local empty=$((width - filled))
-    local color=$GREEN
-
-    if [ $percent -lt 15 ]; then color=$RED
-    elif [ $percent -lt 40 ]; then color=$YELLOW
-    fi
-
-    printf "${color}["
-    for ((i=0;i<filled;i++)); do printf "="; done
-    for ((i=0;i<empty;i++)); do printf " "; done
-    printf "] ${percent}%%${RESET}\n"
-}
-
+clear
 while true; do
-    clear
-    echo "🌿 SustainableOS Eco-Dashboard (v0.1)"
-    echo "----------------------------------------"
+    # RAM stats
+    MEM_TOTAL=$(grep MemTotal "$LOG_FILE" | awk '{print $2}')
+    MEM_AVAILABLE=$(tail -n1 "$LOG_FILE" | grep MEM_AVAILABLE | awk '{print $2}')
+    MEM_PERCENT=$(( MEM_AVAILABLE * 100 / MEM_TOTAL ))
 
-    # RAM
-    FREE=$(awk '/MemAvailable/ {print $2}' /proc/meminfo)
-    TOTAL=$(awk '/MemTotal/ {print $2}' /proc/meminfo)
-    PERCENT=$(( FREE * 100 / TOTAL ))
-    echo "💾 RAM Available:"
-    draw_bar $PERCENT
+    # Color-coded bar
+    BAR_WIDTH=40
+    FILLED=$(( MEM_PERCENT * BAR_WIDTH / 100 ))
+    EMPTY=$(( BAR_WIDTH - FILLED ))
+    if [ "$MEM_PERCENT" -gt 40 ]; then COLOR="\e[32m"; elif [ "$MEM_PERCENT" -ge 15 ]; then COLOR="\e[33m"; else COLOR="\e[31m"; fi
+    BAR=$(printf "%0.s█" $(seq 1 $FILLED))$(printf "%0.s " $(seq 1 $EMPTY))
 
-    # Frozen processes (S)
+    # Frozen & active processes
     FROZEN=$(ps -eo stat | grep -c "^T")
-    echo "❄️ Frozen processes: $FROZEN"
-
-    # Active processes (R/S/Z/etc)
     ACTIVE=$(ps -eo stat | grep -c "^[RSDZ]")
-    echo "⚡ Active processes: $ACTIVE"
 
     # Reap count
-    REAP_COUNT=$(cat $REAP_LOG)
-    echo "🪓 Total Reaps this session: $REAP_COUNT"
+    REAPS=$(tail -n1 "$REAP_COUNT_FILE" 2>/dev/null || echo 0)
 
-    echo "----------------------------------------"
-    echo "Press Ctrl+C to exit"
-    sleep 1
+    # Display dashboard
+    clear
+    echo -e "🌿 SustainableOS v0.1 Dashboard"
+    echo -e "RAM: ${COLOR}${BAR}\e[0m $MEM_PERCENT%"
+    echo "Frozen processes: $FROZEN"
+    echo "Active processes: $ACTIVE"
+    echo "Total Reaps: $REAPS"
+    echo "[E] Toggle Eco Mode (CPU/Backlight)"
+    echo "[Ctrl+C] Exit"
+
+    # Check for Eco toggle
+    read -t "$refresh_interval" -n 1 key
+    if [[ $key == "e" ]]; then
+        "$BASE_DIR/hal.sh" eco_mode_on
+    fi
 done
