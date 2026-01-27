@@ -38,11 +38,3 @@ while true; do
 
     sleep "$MONITOR_INTERVAL"
 done
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 1316ce836c9519eb6063163f43f0c37407ce7746
-
-
