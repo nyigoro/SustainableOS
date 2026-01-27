@@ -23,3 +23,4 @@ DASH_PID=$!
 trap "kill $MON_PID $FREEZE_PID $DASH_PID 2>/dev/null" SIGINT SIGTERM
 wait
 
+
