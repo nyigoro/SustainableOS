@@ -1,62 +1,79 @@
 #!/bin/bash
-# hal.sh - Hardware Abstraction Layer for SustainableOS
+# hal.sh - SustainableOS Hardware Abstraction Layer (MT6762 / Oppo A1k)
+# Controls CPU, Backlight, zRAM, and Eco Mode
 
 set -e
 
+# --- Hardware Paths ---
+CPU_DIR="/sys/devices/system/cpu"
+BACKLIGHT="/sys/class/leds/lcd-backlight/brightness"
+ZRAM_DISK="/sys/block/zram0/disksize"
+
 # -----------------------------
-# CPU Eco Mode (MT6762 Octa-core)
+# Functions
 # -----------------------------
 eco_cpu_limit() {
-    LIMIT=${1:-1000000}  # Default cap frequency in KHz
-    echo "🌱 Applying CPU eco-limit: $LIMIT KHz"
+    LIMIT=${1:-1000000}  # Default 1GHz cap
+    echo "[HAL] Applying CPU eco-limit: $LIMIT KHz"
     for i in {0..7}; do
-        CPU_PATH="/sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq"
-        if [ -w "$CPU_PATH" ]; then
-            echo "$LIMIT" > "$CPU_PATH"
-        fi
+        CPU_PATH="$CPU_DIR/cpu$i/cpufreq/scaling_max_freq"
+        [ -w "$CPU_PATH" ] && echo "$LIMIT" > "$CPU_PATH"
     done
 }
 
-# -----------------------------
-# Backlight Adjustment
-# -----------------------------
 eco_backlight() {
     BRIGHTNESS=${1:-70}
-    LED_PATH="/sys/class/leds/lcd-backlight/brightness"
-    if [ -w "$LED_PATH" ]; then
-        echo "$BRIGHTNESS" > "$LED_PATH"
-        echo "🌱 Backlight set to $BRIGHTNESS"
-    fi
+    [ -w "$BACKLIGHT" ] && echo "$BRIGHTNESS" > "$BACKLIGHT" && echo "[HAL] Backlight set to $BRIGHTNESS"
 }
 
-# -----------------------------
-# zRAM Configuration
-# -----------------------------
 setup_zram() {
     SIZE=${1:-536870912}  # Default 512MB
-    ZRAM="/sys/block/zram0/disksize"
-    if [ -w "$ZRAM" ]; then
-        echo "$SIZE" > "$ZRAM"
-        mkswap /dev/block/zram0
-        swapon /dev/block/zram0
-        echo "🌱 zRAM enabled: $(($SIZE/1024/1024)) MB"
-    fi
+    swapoff /dev/zram0 2>/dev/null || true
+    echo 1 > /sys/block/zram0/reset
+    [ -w "$ZRAM_DISK" ] && echo "$SIZE" > "$ZRAM_DISK"
+    mkswap /dev/zram0
+    swapon /dev/zram0 -p 100
+    echo "[HAL] zRAM enabled: $(($SIZE/1024/1024)) MB"
 }
 
-# -----------------------------
-# Toggle Eco Mode (CPU + Backlight)
-# -----------------------------
 eco_mode_on() {
+    echo "[HAL] Enabling Eco Mode"
     eco_cpu_limit 1000000
     eco_backlight 70
-    echo "🌿 Eco Mode ENABLED"
 }
 
 eco_mode_off() {
+    echo "[HAL] Disabling Eco Mode (Performance Mode)"
     for i in {0..7}; do
-        CPU_PATH="/sys/devices/system/cpu/cpu$i/cpufreq/scaling_max_freq"
-        [ -w "$CPU_PATH" ] && cpufreq=$(cat /sys/devices/system/cpu/cpu$i/cpufreq/cpuinfo_max_freq) && echo "$cpufreq" > "$CPU_PATH"
+        CPU_PATH="$CPU_DIR/cpu$i/cpufreq/scaling_max_freq"
+        if [ -f "$CPU_PATH" ]; then
+            MAX_FREQ=$(cat "$CPU_DIR/cpu$i/cpufreq/cpuinfo_max_freq")
+            echo "$MAX_FREQ" > "$CPU_PATH"
+        fi
     done
-    eco_backlight 255
-    echo "🌿 Eco Mode DISABLED"
+    eco_backlight 180
 }
+
+# -----------------------------
+# Main HAL CLI
+# -----------------------------
+case "$1" in
+    eco_mode_on)
+        eco_mode_on
+        ;;
+    eco_mode_off)
+        eco_mode_off
+        ;;
+    init_zram)
+        setup_zram 536870912
+        ;;
+    eco_cpu_limit)
+        eco_cpu_limit "$2"
+        ;;
+    eco_backlight)
+        eco_backlight "$2"
+        ;;
+    *)
+        echo "Usage: hal.sh {eco_mode_on|eco_mode_off|init_zram|eco_cpu_limit <khz>|eco_backlight <value>}"
+        ;;
+esac
