@@ -1,5 +1,5 @@
 #!/bin/bash
-# run_all.sh - SustainableOS Engine v0.1 Launcher
+# run_all.sh - Launch the full SustainableOS v0.1 engine
 set -e
 
 # -----------------------------
@@ -24,17 +24,14 @@ pkill -f memory_monitor.sh || true
 pkill -f reaper.sh || true
 pkill -f freezer.sh || true
 pkill -f dashboard_cli.sh || true
-rm -f "$LOG_DIR"/*.log
-rm -f /tmp/s_os_*.log
 
-# Ensure reaper.sh is executable
-chmod +x "$BASE_DIR/reaper.sh"
+rm -f "$LOG_DIR"/*.log
 
 # -----------------------------
 # Launch Memory Monitor
 # -----------------------------
 echo "🌿 Starting Memory Monitor..."
-bash "$BASE_DIR/memory_monitor.sh" &
+"$BASE_DIR/memory_monitor.sh" &
 MONITOR_PID=$!
 echo "Monitor PID: $MONITOR_PID"
 
@@ -42,7 +39,7 @@ echo "Monitor PID: $MONITOR_PID"
 # Launch Freezer
 # -----------------------------
 echo "🌿 Starting Freezer..."
-bash "$BASE_DIR/freezer.sh" &
+"$BASE_DIR/freezer.sh" &
 FREEZER_PID=$!
 echo "Freezer PID: $FREEZER_PID"
 
@@ -50,19 +47,16 @@ echo "Freezer PID: $FREEZER_PID"
 # Launch Dashboard CLI
 # -----------------------------
 echo "🌿 Starting Dashboard CLI..."
-bash "$DASH_DIR/dashboard_cli.sh" &
+"$DASH_DIR/dashboard_cli.sh" &
 DASH_PID=$!
 echo "Dashboard PID: $DASH_PID"
-
-# -----------------------------
-# Handle Ctrl+C / Exit
-# -----------------------------
-trap "echo '🌱 Stopping all services...'; kill $MONITOR_PID $FREEZER_PID $DASH_PID; exit" SIGINT SIGTERM
 
 # -----------------------------
 # Wait for all background processes
 # -----------------------------
 echo "🌱 Sustainability Engine v0.1 running..."
 echo "Press Ctrl+C to stop all services."
+
+trap "echo '🌱 Stopping all services...'; kill $MONITOR_PID $FREEZER_PID $DASH_PID; exit" SIGINT SIGTERM
 
 wait
