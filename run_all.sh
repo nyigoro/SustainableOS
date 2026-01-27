@@ -11,17 +11,18 @@ pkill -f memory_monitor.sh || true
 pkill -f freezer.sh || true
 pkill -f dashboard_cli.sh || true
 
-"$BASE_DIR/memory_monitor.sh" &
+bash "$BASE_DIR/memory_monitor.sh" &
 MON_PID=$!
 
-"$BASE_DIR/freezer.sh" &
+bash "$BASE_DIR/freezer.sh" &
 FREEZE_PID=$!
 
-"$DASH_DIR/dashboard_cli.sh" &
+bash "$DASH_DIR/dashboard_cli.sh" &
 DASH_PID=$!
 
 trap "kill $MON_PID $FREEZE_PID $DASH_PID 2>/dev/null" SIGINT SIGTERM
 wait
+
 
 
 

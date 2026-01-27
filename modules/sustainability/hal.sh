@@ -79,3 +79,4 @@ case "$1" in
         echo "Usage: hal.sh {eco_mode_on|eco_mode_off|eco_cpu_limit <hz>|eco_backlight <level>}"
         ;;
 esac
+
