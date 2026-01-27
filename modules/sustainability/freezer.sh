@@ -1,12 +1,39 @@
-#!/system/bin/sh
-# SustainableOS Freezer v0.1
-# Logic: Force-compress background apps into zRAM when idle > 10 mins.
+#!/bin/bash
+# freezer.sh - Pause idle apps to save CPU/RAM
+set -e
 
-echo "[$(date)] Freezer Service Initialized"
+BASE_DIR="$(dirname "$0")"
+LOG_FILE="/tmp/s_os_logs/frozen_procs.log"
+IDLE_THRESHOLD=${IDLE_THRESHOLD:-60}
+DRY_RUN=${DRY_RUN:-1}
 
-# Enable zRAM if not already active (Placeholder for Kernel-level zRAM)
-echo 536870912 > /sys/block/zram0/disksize # 512MB zRAM
-mkswap /dev/block/zram0
-swapon /dev/block/zram0
+echo "🌱 Freezer started..."
+mkdir -p "$(dirname "$LOG_FILE")"
 
-# Future v0.2: Integration with 'activity' manager to detect idle states
+while true; do
+    IDLE_PROCS=$(ps -eo pid,comm,etimes --no-headers | awk -v t="$IDLE_THRESHOLD" '$3>t {print $1":"$2}')
+    
+    echo "" > "$LOG_FILE"
+    for proc in $IDLE_PROCS; do
+        PID=$(echo $proc | cut -d: -f1)
+        CMD=$(echo $proc | cut -d: -f2)
+
+        # Skip system & whitelisted processes
+        case "$CMD" in
+            bash|memory_monitor.sh|reaper.sh|freezer.sh|systemd|zygote|system_server|surfaceflinger)
+                continue
+                ;;
+        esac
+
+        if [ "$DRY_RUN" -eq 1 ]; then
+            echo "[Freezer] Would freeze $CMD ($PID)" >> "$LOG_FILE"
+        else
+            kill -STOP "$PID"
+            echo "[Freezer] Frozen $CMD ($PID)" >> "$LOG_FILE"
+            # Optional: throttle CPU while freezing
+            "$BASE_DIR/hal.sh" eco_cpu_limit 800000
+        fi
+    done
+
+    sleep 10
+done
