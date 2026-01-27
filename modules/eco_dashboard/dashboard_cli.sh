@@ -46,7 +46,7 @@ while true; do
     echo "----------------------------------------"
     echo "[E] Eco Mode  |  [Q] Quit"
 
-    read -t 1 -n 1 key
+    read -t 2 -n 1 key
     case "$key" in
         e|E)
             "$BASE_DIR/hal.sh" eco_mode_on
