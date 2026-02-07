@@ -1,73 +1,110 @@
-# ===============================
-# SustainableOS v0.2 Whitelist
-# ===============================
+# =====================================================
+# SustainableOS v0.2 — Process Whitelist
+# Target: Low-RAM (1GB) devices — MT6762
+# Purpose: NEVER kill system-critical services
+# =====================================================
 
 # -------------------------------
-# System Core
+# Core Android System (DO NOT TOUCH)
 # -------------------------------
+android
+system
 com.android.systemui
 com.android.phone
 com.android.settings
-com.android.launcher
-android
+com.android.providers.media
+com.android.providers.downloads
+com.android.providers.contacts
+com.android.providers.calendar
+com.android.providers.telephony
+com.android.inputmethod.latin
+com.android.permissioncontroller
 
 # -------------------------------
-# Communication Apps (always-on)
+# Zygote / Runtime / Core Services
 # -------------------------------
-com.whatsapp
-org.telegram.messenger
-com.facebook.orca
-com.facebook.mlite
-com.google.android.gm
-com.google.android.apps.messaging
-com.google.android.talk
-com.skype.raider
+zygote
+zygote64
+lmkd
+servicemanager
+hwservicemanager
+vold
+netd
+surfaceflinger
+audioserver
+cameraserver
+mediaserver
+keystore
+gatekeeperd
+healthd
+logd
+statsd
+incidentd
+installd
 
 # -------------------------------
-# Essential Services
+# Google Core (if GApps present)
 # -------------------------------
-com.google.android.gms         # Google Play Services
-com.google.android.gms.policy_sidecar_aps
-com.google.android.googlequicksearchbox
-com.google.android.syncadapters.contacts
-com.google.android.backuptransport
-com.google.android.partnersetup
-com.google.android.ondevicepersonalization
+com.google.android.gms
+com.google.android.gsf
+com.google.android.gsf.login
+com.google.android.gms.persistent
+com.google.android.setupwizard
+com.google.android.packageinstaller
 
 # -------------------------------
-# Media / Navigation
+# Telephony / Radio (MediaTek)
 # -------------------------------
-com.google.android.youtube
-com.spotify.music
-com.mxtech.videoplayer.ad
-com.google.android.apps.maps
-com.waze
+com.android.dialer
+com.android.incallui
+com.android.mms
+com.mediatek.telephony
+com.mediatek.ims
+com.mediatek.wfo.impl
+ims
+rild
+mtk-rild
+netmgrd
 
 # -------------------------------
-# Productivity / Utilities
+# Storage / Encryption / Files
 # -------------------------------
-com.termux
-com.google.android.apps.docs
-com.microsoft.office.officehubrow
-com.dropbox.android
-com.adobe.reader
+com.android.documentsui
+com.android.externalstorage
+com.android.providers.media.module
 
 # -------------------------------
-# Custom S-OS Services
+# Input / Accessibility
 # -------------------------------
+com.google.android.inputmethod.latin
+com.android.accessibility.soundamplifier
+com.android.talkback
+
+# -------------------------------
+# SustainableOS Internal (NEVER KILL SELF)
+# -------------------------------
+sos_engine
 sos_monitor
 sos_freezer
-sos_dashboard
-hal
-memory_monitor
-run_all
-reaper
-freezer
-zram_init
+sos_reaper
+sos_hal
 
 # -------------------------------
-# Optional: Keep critical foreground apps
+# OEM (Oppo / ColorOS – Safe Core)
 # -------------------------------
-com.instagram.android
-com.snapchat.android
-com.twitter.android
+com.oppo.launcher
+com.coloros.launcher
+com.coloros.systemui
+com.oppo.safe
+com.oppo.market
+com.oppo.logkit
+com.oppo.ota
+com.oppo.securitypermission
+
+# -------------------------------
+# Notes
+# -------------------------------
+# • Everything NOT listed here is eligible for reclaim
+# • User apps will be reaped under memory pressure
+# • This file is intentionally conservative
+# =====================================================

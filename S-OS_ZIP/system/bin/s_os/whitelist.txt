@@ -1,0 +1,110 @@
+# =====================================================
+# SustainableOS v0.2 — Process Whitelist
+# Target: Low-RAM (1GB) devices — MT6762
+# Purpose: NEVER kill system-critical services
+# =====================================================
+
+# -------------------------------
+# Core Android System (DO NOT TOUCH)
+# -------------------------------
+android
+system
+com.android.systemui
+com.android.phone
+com.android.settings
+com.android.providers.media
+com.android.providers.downloads
+com.android.providers.contacts
+com.android.providers.calendar
+com.android.providers.telephony
+com.android.inputmethod.latin
+com.android.permissioncontroller
+
+# -------------------------------
+# Zygote / Runtime / Core Services
+# -------------------------------
+zygote
+zygote64
+lmkd
+servicemanager
+hwservicemanager
+vold
+netd
+surfaceflinger
+audioserver
+cameraserver
+mediaserver
+keystore
+gatekeeperd
+healthd
+logd
+statsd
+incidentd
+installd
+
+# -------------------------------
+# Google Core (if GApps present)
+# -------------------------------
+com.google.android.gms
+com.google.android.gsf
+com.google.android.gsf.login
+com.google.android.gms.persistent
+com.google.android.setupwizard
+com.google.android.packageinstaller
+
+# -------------------------------
+# Telephony / Radio (MediaTek)
+# -------------------------------
+com.android.dialer
+com.android.incallui
+com.android.mms
+com.mediatek.telephony
+com.mediatek.ims
+com.mediatek.wfo.impl
+ims
+rild
+mtk-rild
+netmgrd
+
+# -------------------------------
+# Storage / Encryption / Files
+# -------------------------------
+com.android.documentsui
+com.android.externalstorage
+com.android.providers.media.module
+
+# -------------------------------
+# Input / Accessibility
+# -------------------------------
+com.google.android.inputmethod.latin
+com.android.accessibility.soundamplifier
+com.android.talkback
+
+# -------------------------------
+# SustainableOS Internal (NEVER KILL SELF)
+# -------------------------------
+sos_engine
+sos_monitor
+sos_freezer
+sos_reaper
+sos_hal
+
+# -------------------------------
+# OEM (Oppo / ColorOS – Safe Core)
+# -------------------------------
+com.oppo.launcher
+com.coloros.launcher
+com.coloros.systemui
+com.oppo.safe
+com.oppo.market
+com.oppo.logkit
+com.oppo.ota
+com.oppo.securitypermission
+
+# -------------------------------
+# Notes
+# -------------------------------
+# • Everything NOT listed here is eligible for reclaim
+# • User apps will be reaped under memory pressure
+# • This file is intentionally conservative
+# =====================================================
