@@ -1,0 +1,26 @@
+# =====================================================
+# Vivo Funtouch / OriginOS Critical Services
+# =====================================================
+
+# Launcher / UI
+com.vivo.launcher
+com.bbk.launcher2
+com.vivo.systemui
+
+# Core Framework
+com.vivo.framework
+com.vivo.security
+com.iqoo.secure
+
+# Power / Performance
+com.vivo.abe
+com.vivo.pem
+com.vivo.pushservice
+
+# Telephony Extensions
+com.android.incallui
+com.vivo.dialer
+
+# OTA / System
+com.vivo.updater
+com.vivo.systemupgrade

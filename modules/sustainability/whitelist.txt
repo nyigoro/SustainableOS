@@ -1,36 +1,31 @@
 # =====================================================
-# SustainableOS v0.2 — Process Whitelist
-# Target: Low-RAM (1GB) devices — MT6762
-# Purpose: NEVER kill system-critical services
+# SustainableOS v0.2 — Universal Whitelist
+# Target: GSI / Treble Devices (1–2GB RAM)
+# Scope: Samsung / Tecno / itel / Oppo / Vivo
 # =====================================================
 
-# -------------------------------
-# Core Android System (DO NOT TOUCH)
-# -------------------------------
+# -----------------------------------------------------
+# Android Core (ABSOLUTE NO-TOUCH)
+# -----------------------------------------------------
 android
 system
 com.android.systemui
 com.android.phone
 com.android.settings
-com.android.providers.media
-com.android.providers.downloads
-com.android.providers.contacts
-com.android.providers.calendar
-com.android.providers.telephony
-com.android.inputmethod.latin
+com.android.launcher
 com.android.permissioncontroller
 
-# -------------------------------
-# Zygote / Runtime / Core Services
-# -------------------------------
+# -----------------------------------------------------
+# Runtime / Native Services
+# -----------------------------------------------------
 zygote
 zygote64
 lmkd
 servicemanager
 hwservicemanager
+surfaceflinger
 vold
 netd
-surfaceflinger
 audioserver
 cameraserver
 mediaserver
@@ -39,72 +34,76 @@ gatekeeperd
 healthd
 logd
 statsd
-incidentd
 installd
 
-# -------------------------------
-# Google Core (if GApps present)
-# -------------------------------
+# -----------------------------------------------------
+# Google Core (GApps-aware, safe if present)
+# -----------------------------------------------------
 com.google.android.gms
+com.google.android.gms.persistent
 com.google.android.gsf
 com.google.android.gsf.login
-com.google.android.gms.persistent
 com.google.android.setupwizard
-com.google.android.packageinstaller
+com.google.android.permissioncontroller
+com.google.android.googlequicksearchbox
 
-# -------------------------------
-# Telephony / Radio (MediaTek)
-# -------------------------------
+# -----------------------------------------------------
+# Communication (Always-on apps)
+# -----------------------------------------------------
+com.whatsapp
+org.telegram.messenger
+com.facebook.orca
+com.facebook.mlite
+com.google.android.gm
+com.google.android.apps.messaging
+com.google.android.talk
+com.skype.raider
+
+# -----------------------------------------------------
+# Media / Navigation
+# -----------------------------------------------------
+com.google.android.youtube
+com.spotify.music
+com.mxtech.videoplayer.ad
+com.google.android.apps.maps
+com.waze
+
+# -----------------------------------------------------
+# Productivity / Utilities
+# -----------------------------------------------------
+com.termux
+com.google.android.apps.docs
+com.microsoft.office.officehubrow
+com.dropbox.android
+com.adobe.reader
+
+# -----------------------------------------------------
+# OEM-Agnostic Telephony / Radio
+# -----------------------------------------------------
 com.android.dialer
 com.android.incallui
 com.android.mms
-com.mediatek.telephony
-com.mediatek.ims
-com.mediatek.wfo.impl
 ims
 rild
-mtk-rild
-netmgrd
 
-# -------------------------------
-# Storage / Encryption / Files
-# -------------------------------
-com.android.documentsui
-com.android.externalstorage
-com.android.providers.media.module
-
-# -------------------------------
-# Input / Accessibility
-# -------------------------------
-com.google.android.inputmethod.latin
-com.android.accessibility.soundamplifier
-com.android.talkback
-
-# -------------------------------
-# SustainableOS Internal (NEVER KILL SELF)
-# -------------------------------
+# -----------------------------------------------------
+# SustainableOS (Self-Preservation)
+# -----------------------------------------------------
 sos_engine
 sos_monitor
 sos_freezer
-sos_reaper
-sos_hal
+sos_dashboard
 
-# -------------------------------
-# OEM (Oppo / ColorOS – Safe Core)
-# -------------------------------
-com.oppo.launcher
-com.coloros.launcher
-com.coloros.systemui
-com.oppo.safe
-com.oppo.market
-com.oppo.logkit
-com.oppo.ota
-com.oppo.securitypermission
+# -----------------------------------------------------
+# Optional: Social (Foreground-biased)
+# -----------------------------------------------------
+com.instagram.android
+com.snapchat.android
+com.twitter.android
 
-# -------------------------------
-# Notes
-# -------------------------------
-# • Everything NOT listed here is eligible for reclaim
-# • User apps will be reaped under memory pressure
-# • This file is intentionally conservative
+# =====================================================
+# Notes:
+# • Anything NOT listed here is eligible for reclaim
+# • OEM-specific services are intentionally excluded
+# • Reaper must check foreground UID before killing
 # =====================================================

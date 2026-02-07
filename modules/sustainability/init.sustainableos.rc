@@ -1,41 +1,30 @@
-# --- SustainableOS System Service Definitions ---
-# v0.2 — Pulse + Heartbeat architecture
+# =====================================================
+# SustainableOS v0.2 — Base Whitelist (Universal)
+# =====================================================
 
-on post-fs-data
-    mkdir /data/vendor/s_os 0770 system system
-    mkdir /data/vendor/s_os/logs 0770 system system
-    mkdir /tmp/s_os_logs 0775 shell shell
+# --- Core Android ---
+android
+system
+system_server
+zygote
+zygote64
 
-# ----------------------------
-# Pulse (Memory Monitor)
-# ----------------------------
-service sos_monitor /system/bin/s_os/memory_monitor.sh
-    class late_start
-    group system
-    restart_period 5
-    disabled
+# --- UI / Input ---
+com.android.systemui
+com.android.launcher
+com.google.android.inputmethod.latin
 
-# ----------------------------
-# Guardian (Freezer)
-# ----------------------------
-service sos_freezer /system/bin/s_os/freezer.sh
-    class late_start
-    group system
-    disabled
+# --- Telephony / Radio ---
+com.android.phone
+com.android.telephony
+com.android.stk
 
-# ----------------------------
-# Interface (Dashboard)
-# ----------------------------
-service sos_dashboard /system/bin/s_os/dashboard_cli.sh
-    class late_start
-    user shell
-    group shell
-    disabled
+# --- Google Core ---
+com.google.android.gms
+com.google.android.gsf
+com.android.vending
+com.google.android.gm
 
-# ----------------------------
-# Boot Trigger
-# ----------------------------
-on property:sys.boot_completed=1
-    start sos_monitor
-    start sos_freezer
-    write /dev/kmsg "🌿 SustainableOS: Engine online."
+# --- Sync / Framework ---
+com.google.android.syncadapters.contacts
+com.google.android.backuptransport

@@ -1,0 +1,16 @@
+# =====================================================
+# Transsion (Tecno / itel / Infinix) Core Services
+# =====================================================
+
+# Launcher / UI
+com.transsion.hilauncher
+com.transsion.XOSLauncher
+com.transsion.smartpanel
+
+# Power / Resource Control
+com.transsion.powermanager
+com.transsion.phonemaster
+
+# OTA / Firmware
+com.itel.wirelessupdate
+com.transsion.ota

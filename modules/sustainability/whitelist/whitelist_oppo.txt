@@ -1,0 +1,9 @@
+# =====================================================
+# Oppo / ColorOS Core Services
+# =====================================================
+
+com.coloros.launcher
+com.coloros.safecenter
+com.coloros.phonemanager
+com.oppo.ota
+com.oppo.launcher

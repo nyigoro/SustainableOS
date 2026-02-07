@@ -1,0 +1,25 @@
+# =====================================================
+# Xiaomi MIUI / HyperOS Critical Services
+# =====================================================
+
+# Launcher / UI
+com.miui.home
+com.mi.android.globalFileexplorer
+com.miui.systemui.plugin
+
+# Core MIUI Framework
+com.miui.core
+com.miui.securitycore
+com.miui.securitycenter
+
+# Telephony Extensions
+com.android.incallui
+com.miui.miservice
+
+# Power / Background Management
+com.miui.powerkeeper
+com.miui.daemon
+
+# OTA / System Updates
+com.android.updater
+com.miui.ota

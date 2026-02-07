@@ -1,0 +1,20 @@
+# =====================================================
+# Samsung OneUI / Knox Critical Services
+# =====================================================
+
+# Launcher / UI
+com.sec.android.app.launcher
+com.samsung.android.oneconnect
+com.samsung.android.app.cocktailbarservice
+
+# Knox / Security
+com.samsung.android.knox.containercore
+com.samsung.android.knox.attestation
+com.samsung.android.biometrics.app.setting
+
+# Telephony Extensions
+com.samsung.android.messaging
+com.samsung.android.dialer
+
+# Display / Mirroring
+com.samsung.android.smartmirroring
